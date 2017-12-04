@@ -39,4 +39,5 @@ $lang = array_merge($lang, array(
 	'LOG_EMAIL_SENT_USER_DELETED_GROUP'		=> '<strong>Email sent to user deleted from usergroup</strong> %1$s<br />» %2$s',
 	'LOG_EMAIL_SENT_USER_PROMOTED_GROUP'	=> '<strong>Email sent to user promoted to leader in usergroup</strong> %1$s<br />» %2$s',
 	'LOG_EMAIL_SENT_USER_DEMOTED_GROUP'		=> '<strong>Email sent to user demoted in usergroup</strong> %1$s<br />» %2$s',	
+	'LOG_EMAIL_SENT_USER_APPROVED_GROUP'	=> '<strong>Email sent to user approved in usergroup</strong> %1$s<br />» %2$s',	
 ));

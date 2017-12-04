@@ -63,24 +63,37 @@ class listener implements EventSubscriberInterface
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'core.group_add_user_after'	=> 'email_to_user',
-			'core.user_set_group_attributes' => 'email_to_user',
+			'core.group_add_user_after'			=> 'email_to_user_add',
+			'core.user_set_group_attributes'	=> 'email_to_user_attrib',
+			'core.group_delete_user_after'		=> 'email_to_user_delete',
 		);
 	}
 
-	public function email_to_user($event)
+	public function email_to_user_add($event)
 	{
-		$user_id_array = $event['user_id_ary'];
+		$this->email_to_user($event['user_id_ary'], 'add', $event['pending'], $event['group_id'], $event['group_name']);
+	}
+	
+	public function email_to_user_attrib($event)
+	{
+		$this->email_to_user($event['user_id_ary'], $event['action'], false, $event['group_id'], $event['group_name']);
+	}
+	
+	public function email_to_user_delete($event)
+	{
+		$this->email_to_user($event['user_id_ary'], 'delete', false, $event['group_id'], $event['group_name']);
+	}
 
-		$action = isset($event['action']) ? $event['action'] : 'add';
+	private function email_to_user($user_id_array, $action = 'default', $pending = false, $group_id = false, $group_name = '')
+	{
 
 		// no array set or user is pending or action is default just go back to what we were doing
-		if (!sizeof($user_id_array) || $event['pending'] || $action == 'default')
+		if (!sizeof($user_id_array) || $pending || $action == 'default')
 		{
 			return;
 		}
 
-		// grab user data that is getting the email
+		// grab user(s) data that is getting the email
 		$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
 			FROM ' . USERS_TABLE . '
 			WHERE ' . $this->db->sql_in_set('user_id', $user_id_array);
@@ -94,7 +107,7 @@ class listener implements EventSubscriberInterface
 			return;
 		}
 
-		$group_name = (!$event['group_name']) ? get_group_name((int) $event['group_id']) : $event['group_name'];
+		$group_name = (!$group_name) ? get_group_name((int) $group_id) : $group_name;
 		switch ($action)
 		{
 			case 'add':
@@ -115,6 +128,11 @@ class listener implements EventSubscriberInterface
 			case 'demote';
 				$email_template = '@rmcgirr83_etuogsc/user_demote_group';
 				$log = 'LOG_EMAIL_SENT_USER_DEMOTED_GROUP';
+			break;
+
+			case 'approve';
+				$email_template = '@rmcgirr83_etuogsc/user_approve_group';
+				$log = 'LOG_EMAIL_SENT_USER_APPROVED_GROUP';
 			break;
 
 			default;
@@ -150,7 +168,7 @@ class listener implements EventSubscriberInterface
 				'USERNAME'		=> $email_users[$i]['username'],
 				'GROUP_NAME'	=> $group_name,
 				'EMAIL_SIG'		=> $this->config['board_email_sig'],
-				'U_GROUP'		=> "$server_url/memberlist.$this->php_ext?mode=group&g={$event['group_id']}")
+				'U_GROUP'		=> "$server_url/memberlist.$this->php_ext?mode=group&g={$group_id}")
 			);
 
 			$messenger->send($email_users[$i]['user_notify_type']);
