@@ -1,0 +1,8 @@
+Subject: You have been promoted in this usergroup
+
+Congratulations {USERNAME},
+
+You have been promoted in the "{GROUP_NAME}" group on "{SITENAME}".
+This action was done by a group leader or the site administrator, contact them for more information.
+
+{EMAIL_SIG}

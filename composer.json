@@ -1,0 +1,25 @@
+{
+    "name": "rmcgirr83/etuogsc",
+    "type": "phpbb-extension",
+    "description": "Will send an email to users that are either added, removed, promoted or demoted in a user group",
+    "version": "1.0.0",
+    "time": "2017-12-02",
+    "keywords": [
+        "phpbb",
+        "extension",
+        "email to user"
+    ],
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Rich McGirr",
+            "role": "Developer"
+        }
+    ],
+    "extra": {
+        "display-name": "Email To User On Group Status Change",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.2.0"
+        }
+    }
+}

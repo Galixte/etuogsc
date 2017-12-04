@@ -1,0 +1,13 @@
+services:
+    rmcgirr83.etuogsc.listener:
+        class:  rmcgirr83\etuogsc\event\listener
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@log'            
+            - '@template'
+            - '@user'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }            
