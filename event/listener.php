@@ -107,7 +107,7 @@ class listener implements EventSubscriberInterface
 			return;
 		}
 
-		$group_name = (!$group_name) ? get_group_name((int) $group_id) : $group_name;
+		$group_name = (empty($group_name)) ? get_group_name((int) $group_id) : $group_name;
 		switch ($action)
 		{
 			case 'add':
