@@ -73,12 +73,12 @@ class listener implements EventSubscriberInterface
 	{
 		$this->email_to_user($event['user_id_ary'], 'add', $event['pending'], $event['group_id'], $event['group_name']);
 	}
-	
+
 	public function email_to_user_attrib($event)
 	{
 		$this->email_to_user($event['user_id_ary'], $event['action'], false, $event['group_id'], $event['group_name']);
 	}
-	
+
 	public function email_to_user_delete($event)
 	{
 		$this->email_to_user($event['user_id_ary'], 'delete', false, $event['group_id'], $event['group_name']);
